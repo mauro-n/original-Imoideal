@@ -1,0 +1,73 @@
+.dropdown-menu .dropdown-item.active,
+.dropdown-menu .dropdown-item:active {
+    background-color: #DC3545;
+}
+.img-profile{
+    width: 34px;
+    height: 34px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.divisa {
+    margin: 0px;
+}
+.img-prof {
+    position: relative;
+    padding-bottom: 100%;
+    background-color: #f0f0f0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 5px 5px 0px 0px;
+    ;
+}
+
+.img-prof > div, .img-prof > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.edit-anunc {
+    float: left;
+    width: 50%;
+    top: 0px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.0em;
+    border-radius: 0px 0px 0px 5px;
+    color: #6C757D;
+    margin: 0px;
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #6C757D;
+}
+.del-anunc {
+    float: right;
+    width: 50%;
+    top: 0px;
+    right: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.0em;
+    border-radius: 0px 0px 5px 0px;
+    background-color: rgba(220, 53, 69, 1);
+    color: #fff;
+    margin: 0px;
+    padding: 15px;
+}
+.edit-anunc:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    cursor: pointer;
+}
+.del-anunc:hover {
+    background-color: rgba(187, 45, 59, 1);
+    cursor: pointer;
+}

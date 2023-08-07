@@ -1,0 +1,82 @@
+.dropdown-menu .dropdown-item.active,
+.dropdown-menu .dropdown-item:active {
+    background-color: #DC3545;
+}
+.img-profile{
+    width: 34px;
+    height: 34px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.divisa {
+    margin: 0px;
+}
+.box-search {
+    width: 100%;
+    padding: 40px;
+    background-color: #fff;
+
+    .form-search .form-control, .form-select {
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        color: rgba(0, 0, 0, 0.8);
+        border-radius: 4px;
+        padding: 5px;
+        height: 46px;
+    }
+
+    .form-search .btn {
+        color: white;
+        background-color: #dc3545; /* Cor vermelha do botão */
+        border-color: #dc3545; /* Cor da borda do botão */
+        border-radius: 4px;
+        padding: 10px;
+        cursor: pointer;
+    }
+}
+.anuclinks a {
+    text-decoration: none;
+}
+.anunc {
+    
+    .card-body {
+        padding: 0px;
+    }
+}
+.img-anuncio {
+    position: relative;
+    padding-bottom: 56.25%;
+    background-color: #f0f0f0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% auto;
+    border-radius: 5px 0px 0px 5px;
+}
+.title-anun {
+    padding: 15px 0px 15px 0px;
+    .card-text {
+        line-height: 100%;
+        max-height: 70px;
+        overflow: hidden;
+    }
+}
+.prec-anun {
+    padding: 15px 25px 15px 0px;
+}
+.img-anuncio > div, .img-anuncio > img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 1024px) {
+    .img-anuncio {
+        border-radius: 5px 5px 0px 0px;
+    }
+    .title-anun {
+        padding: 10px 25px 0px 25px;
+    }
+}
