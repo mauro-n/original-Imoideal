@@ -1,7 +1,18 @@
 <?php
-require_once './source/sys/class/Container.php';
+require_once 'source/sys/class/Container.php';
+require_once 'source/sys/class/Session.php';
 
-$html = new Container();
+$session = new Session();
+$session->RefreshSession();
+
+$path = "";
+if (isset($_GET['filtro'])) {
+    $path = "../";
+} else {
+    $path = "";
+}
+
+$html = new Container($path);
 ?>
 <!doctype html>
 <html lang="pt-br">
@@ -9,6 +20,8 @@ $html = new Container();
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
+        <base href="pesquisa.php"/> 
+
         <title>Pesquisa - ImoIdeal</title>
         <meta name='title' content='Pesquisa - ImoIdeal'>
         <meta name='keywords' content='aluguel, compra, terreno, casa, apartamento, quarto, terrenos, casas, apartamentos, quartos, imodeal'>
@@ -18,22 +31,22 @@ $html = new Container();
         <meta name='language' content='Portuguese'>
         <meta name='author' content='Imodeal.com'>
 
-        <link rel="apple-touch-icon" sizes="57x57" href="source/img/favicon/favicon/apple-icon-57x57.png">
-        <link rel="apple-touch-icon" sizes="60x60" href="source/img/favicon/apple-icon-60x60.png">
-        <link rel="apple-touch-icon" sizes="72x72" href="source/img/favicon/apple-icon-72x72.png">
-        <link rel="apple-touch-icon" sizes="76x76" href="source/img/favicon/apple-icon-76x76.png">
-        <link rel="apple-touch-icon" sizes="114x114" href="source/img/favicon/apple-icon-114x114.png">
-        <link rel="apple-touch-icon" sizes="120x120" href="source/img/favicon/apple-icon-120x120.png">
-        <link rel="apple-touch-icon" sizes="144x144" href="source/img/favicon/apple-icon-144x144.png">
-        <link rel="apple-touch-icon" sizes="152x152" href="source/img/favicon/apple-icon-152x152.png">
-        <link rel="apple-touch-icon" sizes="180x180" href="source/img/favicon/apple-icon-180x180.png">
-        <link rel="icon" type="image/png" sizes="192x192"  href="source/img/favicon/android-icon-192x192.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="source/img/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="96x96" href="source/img/favicon/favicon-96x96.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="source/img/favicon/favicon-16x16.png">
-        <link rel="manifest" href="source/img/favicon/manifest.json">
+        <link rel="apple-touch-icon" sizes="57x57" href="<?php echo $path; ?>source/img/favicon/favicon/apple-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="<?php echo $path; ?>source/img/favicon/apple-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="<?php echo $path; ?>source/img/favicon/apple-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="<?php echo $path; ?>source/img/favicon/apple-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="<?php echo $path; ?>source/img/favicon/apple-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="<?php echo $path; ?>source/img/favicon/apple-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="<?php echo $path; ?>source/img/favicon/apple-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="<?php echo $path; ?>source/img/favicon/apple-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo $path; ?>source/img/favicon/apple-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="192x192"  href="<?php echo $path; ?>source/img/favicon/android-icon-192x192.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo $path; ?>source/img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="96x96" href="<?php echo $path; ?>source/img/favicon/favicon-96x96.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="<?php echo $path; ?>source/img/favicon/favicon-16x16.png">
+        <link rel="manifest" href="<?php echo $path; ?>source/img/favicon/manifest.json">
         <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="source/img/favicon/ms-icon-144x144.png">
+        <meta name="msapplication-TileImage" content="<?php echo $path; ?>source/img/favicon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -41,11 +54,13 @@ $html = new Container();
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-        <link rel="stylesheet" type="text/css" href="source/css/pesquisa.css">
-        <link rel="stylesheet" type="text/css" href="source/css/rodape.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $path; ?>source/css/pesquisa.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $path; ?>source/css/rodape.css">
 
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="<?php echo $path; ?>source/js/pesquisa.js"></script>
     </head>
-    <body>
+    <body onload="Inicializa();">
         <?php
         echo $html->WriteMenu();
         ?>
@@ -57,7 +72,7 @@ $html = new Container();
                 <form class="form-search">
                     <div class="row">
                         <div class="col-md-2  mb-2">
-                            <select id="selecType" class="form-select">
+                            <select id="PesqCateg" class="form-select">
                                 <option>Apartamento</option>
                                 <option>Casa</option>
                                 <option>Terreno</option>
@@ -65,16 +80,18 @@ $html = new Container();
                             </select>
                         </div>
                         <div class="col-md-2  mb-2">
-                            <select id="selecModo" class="form-select">
+                            <select id="PesqType" class="form-select">
                                 <option>Alugar</option>
                                 <option>Comprar</option>
                             </select>
                         </div>
-                        <div class="col-md  mb-2">
-                            <input type="text" class="form-control" placeholder="Local" aria-label="Local">
+                        <div class="col-md mb-2" id="opt-containe">
+                            <input type="text" id="PesqText" class="form-control" oninput="OnWriting(this);" placeholder="Local" aria-label="Local">
+                            <div class="options-container noshow" id="options-container">
+                            </div>
                         </div>
                         <div class="col-md-2  mb-2">
-                            <button type="button" onclick="window.location = 'pesquisa';" style="width: 100%;" class="btn btn-danger"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button>
+                            <button type="button" onclick="Pesquisar();" style="width: 100%;" class="btn btn-danger"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button>
                         </div>
                     </div>
                 </form>
@@ -136,7 +153,7 @@ $html = new Container();
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <div class="img-anuncio" style="background-image: url(source/img/anuncio/anunc1.webp);"></div>
+                                        <div class="img-anuncio" style="background-image: url(<?php echo $path; ?>source/img/anuncio/anunc1.webp);"></div>
                                     </div>
                                     <div class="col-sm title-anun">
                                         <h5 class="card-title mb-1">Card title</h5>
@@ -162,7 +179,7 @@ $html = new Container();
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <div class="img-anuncio" style="background-image: url(source/img/anuncio/anunc2.webp);"></div>
+                                        <div class="img-anuncio" style="background-image: url(<?php echo $path; ?>source/img/anuncio/anunc2.webp);"></div>
                                     </div>
                                     <div class="col-sm title-anun">
                                         <h5 class="card-title mb-1">Card title</h5>
@@ -188,7 +205,7 @@ $html = new Container();
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-sm-4">
-                                        <div class="img-anuncio" style="background-image: url(source/img/anuncio/anuc3.jpg);"></div>
+                                        <div class="img-anuncio" style="background-image: url(<?php echo $path; ?>source/img/anuncio/anuc3.jpg);"></div>
                                     </div>
                                     <div class="col-sm title-anun">
                                         <h5 class="card-title mb-1">Card title</h5>

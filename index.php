@@ -1,5 +1,10 @@
 <?php
 require_once './source/sys/class/Container.php';
+require_once './source/sys/class/Session.php';
+
+$session = new Session();
+$session->RefreshSession();
+
 $html = new Container();
 ?>
 <!doctype html>
@@ -37,6 +42,9 @@ $html = new Container();
 
         <link rel="stylesheet" type="text/css" href="source/css/index.css">
         <link rel="stylesheet" type="text/css" href="source/css/rodape.css">
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="source/js/pesquisa.js"></script>
 
         <script>
             // URL da API do ipinfo.io para obter informações de localização por IP
@@ -59,7 +67,7 @@ $html = new Container();
             getCityFromIP();
         </script>
     </head>
-    <body>
+    <body onload="Inicializa();">
         <?php
         echo $html->WriteMenu();
         ?>
@@ -71,7 +79,7 @@ $html = new Container();
                     <form class="form-search">
                         <div class="row">
                             <div class="col-md-2 mb-2">
-                                <select id="selecType" class="form-select">
+                                <select id="PesqCateg" class="form-select">
                                     <option>Apartamento</option>
                                     <option>Casa</option>
                                     <option>Terreno</option>
@@ -79,16 +87,18 @@ $html = new Container();
                                 </select>
                             </div>
                             <div class="col-md-2 mb-2">
-                                <select id="selecModo" class="form-select">
+                                <select id="PesqType" class="form-select">
                                     <option>Alugar</option>
                                     <option>Comprar</option>
                                 </select>
                             </div>
-                            <div class="col-md mb-2">
-                                <input type="text" class="form-control" placeholder="Local" aria-label="Local">
+                            <div class="col-md mb-2" id="opt-containe">
+                                <input type="text" id="PesqText" class="form-control" oninput="OnWriting(this);" placeholder="Local" aria-label="Local">
+                                <div class="options-container noshow" id="options-container">
+                                </div>
                             </div>
                             <div class="col-md-2 mb-2">
-                                <button type="button" onclick="window.location = 'pesquisa';" style="width: 100%;" class="btn btn-danger"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button>
+                                <button type="button" onclick="Pesquisar();" style="width: 100%;" class="btn btn-danger"><i class="fa-solid fa-magnifying-glass"></i> Pesquisar</button>
                             </div>
                         </div>
                     </form>

@@ -1,0 +1,30 @@
+RewriteEngine On
+
+# Remover a extensão .php dos URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}\.php -f
+RewriteRule ^(.*)$ $1.php
+
+# Redirecionar URLs específicas com parâmetros
+RewriteRule ^source/prd/create-login$ source/create-login.php?amb=PRD [QSA,L]
+RewriteRule ^source/sbx/create-login$ source/create-login.php?amb=SBX [QSA,L]
+
+RewriteRule ^source/prd/valid-login$ source/valid-login.php?amb=PRD [QSA,L]
+RewriteRule ^source/sbx/valid-login$ source/valid-login.php?amb=SBX [QSA,L]
+
+RewriteRule ^source/prd/refresh-login/([a-zA-Z0-9]+)/?$ source/refresh-login.php?amb=PRD&cod=$1 [NC,L,QSA]
+RewriteRule ^source/sbx/refresh-login/([a-zA-Z0-9]+)/?$ source/refresh-login.php?amb=SBX&cod=$1 [NC,L,QSA]
+
+# Configuração de páginas de erro personalizadas
+ErrorDocument 403 /403.php
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
+
+# Remover cabeçalhos específicos
+<IfModule mod_headers.c>
+    Header unset Date
+    Header unset Platform
+    Header unset Server
+    Header unset Vary
+    Header unset Content-Length
+</IfModule>

@@ -12,16 +12,15 @@ class Database {
         $db_driver = "mysql";
         
         switch ($amb) {
-            case 'QAS':
-                $db_nome = "u440131743_imoideal_QAS";
-                $db_usuario = "u440131743_imoideal_QAS";
-                $db_senha = "?1ejslT[vjzX";
-                $db_driver = "mysql";
-                break;
             case 'PRD':
                 $db_nome = "u440131743_imoideal";
                 $db_usuario = "u440131743_imoideal";
                 $db_senha = "X?tOmV8T3j9>";
+                break;
+            case 'SBX':
+                $db_nome = "u440131743_imoideal_QAS";
+                $db_usuario = "u440131743_imoideal_QAS";
+                $db_senha = "?1ejslT[vjzX";
                 break;
             default:
                 die("Connection Error: Ambiente Não Definido");

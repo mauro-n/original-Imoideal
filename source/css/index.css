@@ -142,6 +142,43 @@
     font-size: 0.75em;
 }
 
+#opt-containe {
+    position: relative;
+}
+.options-container {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: calc(100% - 24px);
+    margin-left: 12px;
+    margin-right: 12px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    z-index: 99;
+}
+
+.show {
+    display: block; /* Exibe as opções */
+}
+
+.noshow {
+    display: none; /* Oculta as opções */
+}
+
+.option-container {
+    margin: 0px;
+    padding: 8px;
+    line-height: 15px;
+    background-color: #fff;
+}
+
+.option-container:hover {
+    cursor: pointer;
+    background-color: #d6d6d6;
+}
+
 /* Css Mobile */
 @media (max-width: 1024px) {
     .img-back {

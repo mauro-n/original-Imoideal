@@ -1,13 +1,11 @@
 <?php
-
-session_start();
-if (!isset($_SESSION['USER'])) {
-    session_destroy();
-    header("Location: login");
-    exit();
-}
-
+require_once './source/sys/class/Session.php';
 require_once './source/sys/class/Container.php';
+
+$session = new Session();
+$session->ValidSession();
+$session->RefreshSession();
+
 $html = new Container();
 ?>
 <!doctype html>

@@ -1,13 +1,11 @@
 <?php
-
-session_start();
-if (!isset($_SESSION['USER'])) {
-    session_destroy();
-    header("Location: login");
-    exit();
-}
-
+require_once './source/sys/class/Session.php';
 require_once './source/sys/class/Container.php';
+
+$session = new Session();
+$session->ValidSession();
+$session->RefreshSession();
+
 $html = new Container();
 ?>
 <!doctype html>
@@ -62,7 +60,7 @@ $html = new Container();
         <div class="container" style="min-height: 500px;">
             <div class="row mt-4">
                 <div class="col-md-3 mb-4">
-                    <div class="img-prof" style="background-image: url(source/img/perfil/default.png);"></div>
+                    <div class="img-prof" style="background-image: url(<?php echo $_SESSION['USER']['urlimg'];?>);"></div>
                     <div class="col edit-anunc"><i class="fa-regular fa-pen-to-square"></i></div>
                     <div class="col del-anunc"><i class="fa-regular fa-trash-can"></i></div>
                 </div>
@@ -72,9 +70,9 @@ $html = new Container();
                             <button type="button" data-bs-toggle="modal" data-bs-target="#editarPerfilModal" class="btn btn-custom position-absolute top-0 end-0"><i class="fas fa-edit text-muted me-2"></i></button>
                         </div>
                         <div class="card-body">
-                            <h4 class="card-title mb-3">Nome do Usuário</h4>
-                            <p class="card-text"><i class="fa-regular fa-envelope text-muted me-2"></i><b class="text-muted me-1">Email:</b>usuario@exemplo.com<small style="opacity: 0.8;"><i class="fa-solid fa-circle-check text-success ms-1"></i></small></p>
-                            <p class="card-text"><i class="fa-brands fa-whatsapp text-muted me-2"></i><b class="text-muted me-1">WhatsApp:</b>+55 (99) 99999-9999</p>
+                            <h4 class="card-title mb-3"><?php echo $_SESSION['USER']['nome'];?></h4>
+                            <p class="card-text"><i class="fa-regular fa-envelope text-muted me-2"></i><b class="text-muted me-1">Email:</b><?php echo $_SESSION['USER']['email'];?><small style="opacity: 0.8;"><i class="fa-solid fa-circle-check text-success ms-1"></i></small></p>
+                            <p class="card-text"><i class="fa-brands fa-whatsapp text-muted me-2"></i><b class="text-muted me-1">WhatsApp:</b><?php echo $_SESSION['USER']['telefone'];?></p>
                             <hr class="mt-4 mb-4">
                             <h5 class="card-title mb-3"><i class="fa-regular fa-credit-card text-muted me-2"></i><b class="text-muted me-1">Plano:</b><span class="badge text-bg-secondary">Grátis</span></h5>
                             <button type="button" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-dollar-sign me-2"></i>Alterar Plano</button>

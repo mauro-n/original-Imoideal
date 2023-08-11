@@ -1,3 +1,12 @@
+<?php
+session_start();
+if (!isset($_SESSION['USER'])) {
+    session_destroy();
+} else {
+    header("Location: ./");
+    exit;
+}
+?>
 <!doctype html>
 <html lang="pt-br">
     <head>
@@ -33,6 +42,8 @@
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 
         <link rel="stylesheet" type="text/css" href="source/css/login.css">
         <script type="text/javascript" src="source/js/login.js"></script>
@@ -60,17 +71,17 @@
                         <form>
                             <div class="mb-2">
                                 <label for="loginEmail" class="form-label"><i class="bi bi-envelope text-muted me-1"></i>Email</label>
-                                <input type="email" class="form-control" id="InputEmail" oninput="OnInput(this);">
+                                <input type="email" class="form-control" id="InputEmail" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label for="loginPassword" class="form-label"><i class="bi bi-lock text-muted me-1"></i>Senha</label>
-                                <input type="password" class="form-control" id="InputPassword" oninput="OnInput(this);">
+                                <input type="password" class="form-control" id="InputPassword" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <a href="#">Esqueci minha senha</a>
                             </div>
                             <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-outline-danger">Entrar</button>
+                                <button type="button" onclick="FazerLogin();" class="btn btn-outline-danger">Entrar</button>
                             </div>
                         </form>
                     </div>
@@ -81,29 +92,29 @@
                         <form>
                             <div class="mb-3">
                                 <label for="RegisterEmail" class="form-label"><i class="bi bi-envelope text-muted me-1"></i>Email</label>
-                                <input type="email" class="form-control" id="RegisterEmail" oninput="OnInput(this);">
+                                <input type="email" class="form-control" id="RegisterEmail" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label for="RegisterName" class="form-label"><i class="bi bi-person text-muted me-1"></i>Nome</label>
-                                <input type="text" class="form-control" id="RegisterName" oninput="OnInput(this);">
+                                <input type="text" class="form-control" id="RegisterName" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label for="RegisterTel" class="form-label"><i class="bi bi-whatsapp text-muted me-1"></i>Whatsapp</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><small class="text-muted">+55</small></span>
-                                    <input type="text" class="form-control" id="RegisterTel" oninput="OnInput(this);">
+                                    <input type="text" class="form-control" id="RegisterTel" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="RegisterPassword" class="form-label"><i class="bi bi-lock text-muted me-1"></i>Senha</label>
-                                <input type="password" class="form-control" id="RegisterPassword" oninput="OnInput(this);">
+                                <input type="password" class="form-control" id="RegisterPassword" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
                             </div>
                             <div class="mb-3">
                                 <label for="RegisterConfirm" class="form-label"><i class="bi bi-lock text-muted me-1"></i>Confirmar Senha</label>
-                                <input type="password" class="form-control" id="RegisterConfirm" oninput="OnInput(this);">
+                                <input type="password" class="form-control" id="RegisterConfirm" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
                             </div>
                             <div class="d-grid gap-2">
-                                <button type="button" class="btn btn-outline-danger">Registrar</button>
+                                <button type="button" onclick="CriarLogin();" class="btn btn-outline-danger">Registrar</button>
                             </div>
                         </form>
                     </div>

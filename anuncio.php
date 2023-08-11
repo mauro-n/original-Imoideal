@@ -1,5 +1,9 @@
 <?php
 require_once './source/sys/class/Container.php';
+require_once './source/sys/class/Session.php';
+
+$session = new Session();
+$session->RefreshSession();
 
 $html = new Container();
 ?>
