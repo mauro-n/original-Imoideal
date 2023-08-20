@@ -13,13 +13,6 @@ try {
 
     $tokenAPI = new Token();
 
-    $ch = curl_init();
-
-    $headers = array();
-    $headers[] = 'Accept: application/json';
-    $headers[] = 'Api-Key: ' . $tokenAPI->getToken();
-    $headers[] = 'Content-Type: application/json';
-
     if (!isset($_POST['email'])) {
         throw new Exception("Parametro e-mail não informado");
     }
@@ -35,6 +28,13 @@ try {
     if (!isset($_POST['senha'])) {
         throw new Exception("Parametro senha não informado");
     }
+    
+    $ch = curl_init();
+
+    $headers = array();
+    $headers[] = 'Accept: application/json';
+    $headers[] = 'Api-Key: ' . $tokenAPI->getToken();
+    $headers[] = 'Content-Type: application/json';
 
     $fields = array(
         "email" => $_POST['email'],
@@ -48,7 +48,7 @@ try {
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-
+    
     $result = curl_exec($ch);
 
     if (curl_errno($ch)) {
@@ -60,9 +60,7 @@ try {
     $json = json_decode($result);
 
     if (isset($json->userid)) {
-        $retorno['status'] = true;
-        $retorno['mensagem'] = "Criado com sucesso!";
-
+        
         $array = [
             "userid" => $json->userid,
             "urlimg" => $json->urlimg,
@@ -74,19 +72,22 @@ try {
             "checkwpp" => $json->checkwpp,
             "resetpass" => $json->resetpass,
             "datacriac" => $json->datacriac,
-            "dataedit" => $json->dataedit
+            "dataedit" => $json->dataedit,
+            "favoritos" => $json->favoritos
         ];
 
         session_start();
         $_SESSION['USER'] = $array;
         
+        $retorno['status'] = true;
+        $retorno['mensagem'] = "Criado com sucesso!";
     } else {
         throw new Exception($json->error_message);
     }
 } catch (Exception $exc) {
     $retorno['status'] = false;
-    $retorno['mensagem'] = $json->error_message;
+    $retorno['mensagem'] = $exc->getMessage();
 }
 
-echo json_encode($retorno, JSON_PRETTY_PRINT);
+echo json_encode($retorno, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 

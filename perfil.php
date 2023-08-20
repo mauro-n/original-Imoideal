@@ -42,10 +42,13 @@ $html = new Container();
         <meta name="theme-color" content="#ffffff">
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="source/js/windowmsg.js"></script>
+        <script src="source/js/openlink.js"></script>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
+        <link rel="stylesheet" type="text/css" href="source/css/default.css">
         <link rel="stylesheet" type="text/css" href="source/css/perfil.css">
         <link rel="stylesheet" type="text/css" href="source/css/rodape.css">
 
@@ -57,7 +60,7 @@ $html = new Container();
 
         <hr class="divisa">
 
-        <div class="container" style="min-height: 500px;">
+        <div class="container">
             <div class="row mt-4">
                 <div class="col-md-3 mb-4">
                     <div class="img-prof" style="background-image: url(<?php echo $_SESSION['USER']['urlimg'];?>);"></div>
@@ -80,6 +83,10 @@ $html = new Container();
                     </div>
                 </div>
             </div>
+        </div>
+        <hr>
+        <div class="container" style="min-height: 100px;">
+            
         </div>
 
         <?php

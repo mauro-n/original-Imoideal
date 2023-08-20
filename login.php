@@ -39,27 +39,31 @@ if (!isset($_SESSION['USER'])) {
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="source/img/favicon/ms-icon-144x144.png">
         <meta name="theme-color" content="#ffffff">
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" crossorigin="anonymous"></script>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
-        
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="source/js/windowmsg.js"></script>
+        <script type="text/javascript" src="source/js/openlink.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="source/css/default.css">
         <link rel="stylesheet" type="text/css" href="source/css/login.css">
-        <script type="text/javascript" src="source/js/login.js"></script>
 
     </head>
-    <body onload="Inicializa();">
+    <body>
         <div class="login text-bg-danger">
             <div class="container position-relative" style="max-width: 400px;">
-                <a href="."><img class="logo" src="source/img/website/logo-white.png" alt="Imoideal"/></a>
+                <a href="#" onclick="AbrirLink('.');"><img class="logo" src="source/img/website/logo-white.png" alt="Imoideal"/></a>
                 <!-- Abas de Entrar e Criar Conta -->
                 <ul class="nav nav-tabs" id="loginTabs" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active" id="login-tab" data-bs-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Entrar</a>
+                        <a class="nav-link active" onclick="signin = true;" id="login-tab" data-bs-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Entrar</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="register-tab" data-bs-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Criar Conta</a>
+                        <a class="nav-link" onclick="signin = false;" id="register-tab" data-bs-toggle="tab" href="#register" role="tab" aria-controls="register" aria-selected="false">Criar Conta</a>
                     </li>
                 </ul>
 
@@ -69,16 +73,16 @@ if (!isset($_SESSION['USER'])) {
                     <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
                         <!-- Conteúdo da aba Entrar -->
                         <form>
-                            <div class="mb-2">
-                                <label for="loginEmail" class="form-label"><i class="bi bi-envelope text-muted me-1"></i>Email</label>
-                                <input type="email" class="form-control" id="InputEmail" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
+                            <div class="form-floating mb-2">
+                                <input type="email" class="form-control" id="InputEmail" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off" placeholder="name@example.com">
+                                <label for="InputEmail" class="text-muted">E-mail</label>
+                            </div>
+                            <div class="form-floating mb-2">
+                                <input type="password" class="form-control" id="InputPassword" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off" placeholder="********">
+                                <label for="InputPassword" class="text-muted">Senha</label>
                             </div>
                             <div class="mb-3">
-                                <label for="loginPassword" class="form-label"><i class="bi bi-lock text-muted me-1"></i>Senha</label>
-                                <input type="password" class="form-control" id="InputPassword" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
-                            </div>
-                            <div class="mb-3">
-                                <a href="#">Esqueci minha senha</a>
+                                <a href="#" onclick="AbrirLink('#');">Esqueci minha senha</a>
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="button" onclick="FazerLogin();" class="btn btn-outline-danger">Entrar</button>
@@ -90,28 +94,28 @@ if (!isset($_SESSION['USER'])) {
                     <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
                         <!-- Conteúdo da aba Criar Conta -->
                         <form>
-                            <div class="mb-3">
-                                <label for="RegisterEmail" class="form-label"><i class="bi bi-envelope text-muted me-1"></i>Email</label>
-                                <input type="email" class="form-control" id="RegisterEmail" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
+                            <div class="form-floating mb-2">
+                                <input type="email" class="form-control" id="RegisterEmail" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off" placeholder="name@example.com">
+                                <label for="RegisterEmail" class="text-muted">E-mail</label>
                             </div>
-                            <div class="mb-3">
-                                <label for="RegisterName" class="form-label"><i class="bi bi-person text-muted me-1"></i>Nome</label>
-                                <input type="text" class="form-control" id="RegisterName" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
+                            <div class="form-floating mb-2">
+                                <input type="text" class="form-control" id="RegisterName" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off" placeholder="Seu nome">
+                                <label for="RegisterNam" class="text-muted">Nome</label>
                             </div>
-                            <div class="mb-3">
-                                <label for="RegisterTel" class="form-label"><i class="bi bi-whatsapp text-muted me-1"></i>Whatsapp</label>
-                                <div class="input-group">
-                                    <span class="input-group-text"><small class="text-muted">+55</small></span>
-                                    <input type="text" class="form-control" id="RegisterTel" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><small class="text-muted">+55</small></span>
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="RegisterTel" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off" placeholder="00 0000-0000">
+                                    <label for="RegisterTel" class="text-muted">Whatsapp</label>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="RegisterPassword" class="form-label"><i class="bi bi-lock text-muted me-1"></i>Senha</label>
-                                <input type="password" class="form-control" id="RegisterPassword" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
+                            <div class="form-floating mb-2">
+                                <input type="password" class="form-control" id="RegisterPassword" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off" placeholder="********">
+                                <label for="RegisterPassword" class="text-muted">Senha</label>
                             </div>
-                            <div class="mb-3">
-                                <label for="RegisterConfirm" class="form-label"><i class="bi bi-lock text-muted me-1"></i>Confirmar Senha</label>
-                                <input type="password" class="form-control" id="RegisterConfirm" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off">
+                            <div class="form-floating mb-2">
+                                <input type="password" class="form-control" id="RegisterConfirm" oninput="OnInput(this);" onchange="OnChange(this);" autocomplete="off" placeholder="********">
+                                <label for="RegisterConfirm" class="text-muted">Confirmar Senha</label>
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="button" onclick="CriarLogin();" class="btn btn-outline-danger">Registrar</button>
@@ -121,7 +125,8 @@ if (!isset($_SESSION['USER'])) {
                 </div>
             </div>
         </div>
-
+        
+        <script type="text/javascript" src="source/js/login.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     </body>
 </html>

@@ -16,7 +16,7 @@
     text-decoration: none;
 }
 .anunc {
-
+    cursor: pointer;
     .card-body {
         padding: 0px;
     }
@@ -40,7 +40,14 @@
     }
 }
 .prec-anun {
+    position: relative;
     padding: 15px 25px 15px 0px;
+}
+.time-anun {
+    position: absolute;
+    right: 25px;
+    bottom: 15px;
+    font-size: 0.9em;
 }
 .img-anuncio > div, .img-anuncio > img {
     position: absolute;
@@ -59,5 +66,10 @@
     }
     .opcs-anunc {
         display: flex;
+    }
+    .time-anun {
+        text-align: left;
+        left: 25px;
+        bottom: 15px;
     }
 }

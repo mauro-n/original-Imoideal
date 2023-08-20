@@ -1,0 +1,2082 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "API - Imoideal",
+    "description": "Bem-vindo à documentação da nossa API!<br>Aqui você encontrará informações completas sobre todos os endpoints disponíveis, bem como seus parâmetros e respostas.<br>Use esta documentação para interagir com a API.<br>Nós nos esforçamos para mantê-la atualizada e precisa.",
+    "contact": {
+      "name": "Suporte Imoideal",
+      "email": "suporte@imoideal.com"
+    },
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.imoideal.com/source/prd",
+      "description": "Produtivo"
+    },
+    {
+      "url": "https://api.imoideal.com/source/sbx",
+      "description": "SandBox"
+    }
+  ],
+  "security": [
+    {
+      "api_key": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "System",
+      "description": "Informações do sistema"
+    },
+    {
+      "name": "Login",
+      "description": "Gerenciar usuário no sistema"
+    },
+    {
+      "name": "Usuário",
+      "description": "Manipule todas as informações do usuário"
+    },
+    {
+      "name": "Anúncio",
+      "description": "Gerencie os anúncios"
+    },
+    {
+      "name": "Pesquisa",
+      "description": "Gerador de resultado de pesquisa"
+    }
+  ],
+  "paths": {
+    "/info-system": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Recuperar parâmetros do sistema",
+        "description": "Recuperar parâmetros do sistema",
+        "operationId": "infosystem",
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "categorias": {
+                      "title": "Categorias de anúncios",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "title": "Código da Categoria",
+                            "type": "number"
+                          },
+                          "descricao": {
+                            "title": "Descrição da Categoria",
+                            "type": "string",
+                            "maxLength": 100
+                          }
+                        }
+                      },
+                      "readOnly": true
+                    },
+                    "tipos": {
+                      "title": "Tipos de anúncios",
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "title": "Código do Tipo",
+                            "type": "number"
+                          },
+                          "descricao": {
+                            "title": "Descrição do Tipo",
+                            "type": "string",
+                            "maxLength": 100
+                          }
+                        }
+                      },
+                      "readOnly": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create-login": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Criar usuário no sistema",
+        "operationId": "createlogin",
+        "requestBody": {
+          "description": "Ao fornecer as informações básicas o sistema criará um usuário no sistema, retornando todos os dados do novo perfil<br><br><b>OBS:</b> No campo <i>telefone</i> informar somente números",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "nome",
+                  "telefone",
+                  "pass"
+                ],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "title": "E-mail",
+                    "type": "string",
+                    "example": "usuario@email.com",
+                    "maxLength": 100
+                  },
+                  "nome": {
+                    "title": "Nome",
+                    "type": "string",
+                    "example": "Nome do User",
+                    "maxLength": 150
+                  },
+                  "telefone": {
+                    "title": "Telefone",
+                    "type": "number",
+                    "example": "0000000000"
+                  },
+                  "pass": {
+                    "title": "Senha",
+                    "type": "string",
+                    "example": "123@321",
+                    "maxLength": 20
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userid": {
+                      "title": "Código de usuário",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "urlimg": {
+                      "title": "URL Imagem Perfil",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "email": {
+                      "title": "E-mail",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "nome": {
+                      "title": "Nome",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "telefone": {
+                      "title": "Telefone",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "plan": {
+                      "title": "Plano",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "status": {
+                      "title": "Status e-mail",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "checkwpp": {
+                      "title": "WhatsApp verificad",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "resetpass": {
+                      "title": "Reset de senha",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "datacriac": {
+                      "title": "Data criação",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "dataedit": {
+                      "title": "Data da última alteração",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "favoritos": {
+                      "title": "ID Anúncios Favoritos",
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "readOnly": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/valid-login": {
+      "post": {
+        "tags": [
+          "Login"
+        ],
+        "summary": "Validar usuário no sistema",
+        "operationId": "validlogin",
+        "requestBody": {
+          "description": "Ao fornecer as informações como e-mail e senha o sistema verifica existe um usuário e retorna as informações caso exista",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "pass"
+                ],
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "title": "E-mail",
+                    "type": "string",
+                    "example": "usuario@email.com",
+                    "maxLength": 100
+                  },
+                  "pass": {
+                    "title": "Senha",
+                    "type": "string",
+                    "example": "123@321",
+                    "maxLength": 20
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userid": {
+                      "title": "Código de usuário",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "urlimg": {
+                      "title": "URL Imagem Perfil",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "email": {
+                      "title": "E-mail",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "nome": {
+                      "title": "Nome",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "telefone": {
+                      "title": "Telefone",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "plan": {
+                      "title": "Plano",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "status": {
+                      "title": "Status e-mail",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "checkwpp": {
+                      "title": "WhatsApp verificad",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "resetpass": {
+                      "title": "Reset de senha",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "datacriac": {
+                      "title": "Data criação",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "dataedit": {
+                      "title": "Data da última alteração",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "favoritos": {
+                      "title": "ID Anúncios Favoritos",
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "readOnly": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-user/{UserID}": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Recuperar informações do Usuário",
+        "description": "Com o código de usuário, recupere todas informações no sistema",
+        "operationId": "getuser",
+        "parameters": [
+          {
+            "name": "UserID",
+            "in": "path",
+            "description": "Código de usuário",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userid": {
+                      "title": "Código de usuário",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "urlimg": {
+                      "title": "URL Imagem Perfil",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "email": {
+                      "title": "E-mail",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "nome": {
+                      "title": "Nome",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "telefone": {
+                      "title": "Telefone",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "plan": {
+                      "title": "Plano",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "status": {
+                      "title": "Status e-mail",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "checkwpp": {
+                      "title": "WhatsApp verificad",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "resetpass": {
+                      "title": "Reset de senha",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "datacriac": {
+                      "title": "Data criação",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "dataedit": {
+                      "title": "Data da última alteração",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "favoritos": {
+                      "title": "ID Anúncios Favoritos",
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "readOnly": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-post/{PostID}": {
+      "get": {
+        "tags": [
+          "Anúncio"
+        ],
+        "summary": "Recuperar os dados do anúncios",
+        "description": "Com o código do anúncio, recupere todas informações no sistema",
+        "operationId": "getpost",
+        "parameters": [
+          {
+            "name": "PostID",
+            "in": "path",
+            "description": "Código de anúncio",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "codigo": {
+                      "title": "Código de anúncio",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "user": {
+                      "title": "Responsável pelo anúncio",
+                      "type": "object",
+                      "properties": {
+                        "img": {
+                          "title": "Imagem Responsável",
+                          "type": "string",
+                          "readOnly": true
+                        },
+                        "email": {
+                          "title": "E-mail Responsável",
+                          "type": "string",
+                          "maxLength": 100,
+                          "readOnly": true
+                        },
+                        "nome": {
+                          "title": "Nome Responsável",
+                          "type": "string",
+                          "maxLength": 150,
+                          "readOnly": true
+                        },
+                        "tel": {
+                          "title": "Telefone Responsável",
+                          "type": "number",
+                          "readOnly": true
+                        }
+                      },
+                      "readOnly": true
+                    },
+                    "imagens": {
+                      "title": "Imagens do Anúncio",
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "readOnly": true
+                    },
+                    "title": {
+                      "title": "Titulo do anúncio",
+                      "type": "string",
+                      "maxLength": 100,
+                      "readOnly": true
+                    },
+                    "descricao": {
+                      "title": "Descrição do anúncio",
+                      "type": "string",
+                      "maxLength": 500,
+                      "readOnly": true
+                    },
+                    "price": {
+                      "title": "Valor do anúncio",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "quartos": {
+                      "title": "Quantidade de quartos",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "banheiros": {
+                      "title": "Quantidade de banheiros",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "metros": {
+                      "title": "Tamanho em m²",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "vagas": {
+                      "title": "Estacionamento/Garagem",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "areaext": {
+                      "title": "Área externa",
+                      "type": "boolean",
+                      "readOnly": true
+                    },
+                    "piscina": {
+                      "title": "Piscina",
+                      "type": "boolean",
+                      "readOnly": true
+                    },
+                    "arealzr": {
+                      "title": "Área de lazer",
+                      "type": "boolean",
+                      "readOnly": true
+                    },
+                    "data": {
+                      "title": "Data da postagem",
+                      "type": "string",
+                      "format": "date-time",
+                      "readOnly": true
+                    },
+                    "pontos": {
+                      "title": "Relevância",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "address": {
+                      "title": "Endereço do anúncio",
+                      "type": "string",
+                      "maxLength": 100,
+                      "readOnly": true
+                    },
+                    "lat": {
+                      "title": "Latitude do anúncio",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "log": {
+                      "title": "Longitude do anúncio",
+                      "type": "string",
+                      "readOnly": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-posts/{UserID}": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Recuperar todos anúncios do Usuário",
+        "description": "Com o código de usuário, recupere todos anúncios no sistema",
+        "operationId": "getposts",
+        "parameters": [
+          {
+            "name": "UserID",
+            "in": "path",
+            "description": "Código de usuário",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "codigo": {
+                        "title": "Código de anúncio",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "imagens": {
+                        "title": "Imagens do Anúncio",
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "readOnly": true
+                        },
+                        "readOnly": true
+                      },
+                      "title": {
+                        "title": "Titulo do anúncio",
+                        "type": "string",
+                        "maxLength": 100,
+                        "readOnly": true
+                      },
+                      "descricao": {
+                        "title": "Descrição do anúncio",
+                        "type": "string",
+                        "maxLength": 500,
+                        "readOnly": true
+                      },
+                      "price": {
+                        "title": "Valor do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "quartos": {
+                        "title": "Quantidade de quartos",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "banheiros": {
+                        "title": "Quantidade de banheiros",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "metros": {
+                        "title": "Tamanho em m²",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "vagas": {
+                        "title": "Estacionamento/Garagem",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "areaext": {
+                        "title": "Área externa",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "piscina": {
+                        "title": "Piscina",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "arealzr": {
+                        "title": "Área de lazer",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "data": {
+                        "title": "Data da postagem",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                      },
+                      "pontos": {
+                        "title": "Relevância",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "address": {
+                        "title": "Endereço do anúncio",
+                        "type": "string",
+                        "maxLength": 100,
+                        "readOnly": true
+                      },
+                      "lat": {
+                        "title": "Latitude do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "log": {
+                        "title": "Longitude do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      }
+                    }
+                  },
+                  "readOnly": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get-likes/{UserID}": {
+      "get": {
+        "tags": [
+          "Usuário"
+        ],
+        "summary": "Recuperar todos anúncios favoritos do Usuário",
+        "description": "Com o código de usuário, recupere todos anúncios favoritos no sistema",
+        "operationId": "getlikes",
+        "parameters": [
+          {
+            "name": "UserID",
+            "in": "path",
+            "description": "Código de usuário",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "codigo": {
+                        "title": "Código de anúncio",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "imagens": {
+                        "title": "Imagens do Anúncio",
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "readOnly": true
+                        },
+                        "readOnly": true
+                      },
+                      "title": {
+                        "title": "Titulo do anúncio",
+                        "type": "string",
+                        "maxLength": 100,
+                        "readOnly": true
+                      },
+                      "descricao": {
+                        "title": "Descrição do anúncio",
+                        "type": "string",
+                        "maxLength": 500,
+                        "readOnly": true
+                      },
+                      "price": {
+                        "title": "Valor do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "quartos": {
+                        "title": "Quantidade de quartos",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "banheiros": {
+                        "title": "Quantidade de banheiros",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "metros": {
+                        "title": "Tamanho em m²",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "vagas": {
+                        "title": "Estacionamento/Garagem",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "areaext": {
+                        "title": "Área externa",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "piscina": {
+                        "title": "Piscina",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "arealzr": {
+                        "title": "Área de lazer",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "data": {
+                        "title": "Data da postagem",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                      },
+                      "pontos": {
+                        "title": "Relevância",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "address": {
+                        "title": "Endereço do anúncio",
+                        "type": "string",
+                        "maxLength": 100,
+                        "readOnly": true
+                      },
+                      "lat": {
+                        "title": "Latitude do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "log": {
+                        "title": "Longitude do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      }
+                    }
+                  },
+                  "readOnly": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/new-post/{UserID}": {
+      "post": {
+        "tags": [
+          "Anúncio"
+        ],
+        "summary": "Adicionar novo anúncio",
+        "description": "Com o código de usuário, insira um novo anúncio no sistema",
+        "operationId": "newpost",
+        "parameters": [
+          {
+            "name": "UserID",
+            "in": "path",
+            "description": "Código de usuário",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "codigo": {
+                      "title": "Código de anúncio",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "user": {
+                      "title": "Responsável pelo anúncio",
+                      "type": "object",
+                      "properties": {
+                        "img": {
+                          "title": "Imagem Responsável",
+                          "type": "string",
+                          "readOnly": true
+                        },
+                        "email": {
+                          "title": "E-mail Responsável",
+                          "type": "string",
+                          "maxLength": 100,
+                          "readOnly": true
+                        },
+                        "nome": {
+                          "title": "Nome Responsável",
+                          "type": "string",
+                          "maxLength": 150,
+                          "readOnly": true
+                        },
+                        "tel": {
+                          "title": "Telefone Responsável",
+                          "type": "number",
+                          "readOnly": true
+                        }
+                      },
+                      "readOnly": true
+                    },
+                    "imagens": {
+                      "title": "Imagens do Anúncio",
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "readOnly": true
+                    },
+                    "title": {
+                      "title": "Titulo do anúncio",
+                      "type": "string",
+                      "maxLength": 100,
+                      "readOnly": true
+                    },
+                    "descricao": {
+                      "title": "Descrição do anúncio",
+                      "type": "string",
+                      "maxLength": 500,
+                      "readOnly": true
+                    },
+                    "price": {
+                      "title": "Valor do anúncio",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "quartos": {
+                      "title": "Quantidade de quartos",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "banheiros": {
+                      "title": "Quantidade de banheiros",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "metros": {
+                      "title": "Tamanho em m²",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "vagas": {
+                      "title": "Estacionamento/Garagem",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "areaext": {
+                      "title": "Área externa",
+                      "type": "boolean",
+                      "readOnly": true
+                    },
+                    "piscina": {
+                      "title": "Piscina",
+                      "type": "boolean",
+                      "readOnly": true
+                    },
+                    "arealzr": {
+                      "title": "Área de lazer",
+                      "type": "boolean",
+                      "readOnly": true
+                    },
+                    "data": {
+                      "title": "Data da postagem",
+                      "type": "string",
+                      "format": "date-time",
+                      "readOnly": true
+                    },
+                    "pontos": {
+                      "title": "Relevância",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "address": {
+                      "title": "Endereço do anúncio",
+                      "type": "string",
+                      "maxLength": 100,
+                      "readOnly": true
+                    },
+                    "lat": {
+                      "title": "Latitude do anúncio",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "log": {
+                      "title": "Longitude do anúncio",
+                      "type": "string",
+                      "readOnly": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/del-post/{PostID}": {
+      "delete": {
+        "tags": [
+          "Anúncio"
+        ],
+        "summary": "Remover anúncio",
+        "description": "Com o código do anúncio faça a exclusão do post",
+        "operationId": "delpost",
+        "parameters": [
+          {
+            "name": "PostID",
+            "in": "path",
+            "description": "Código do anúncio",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userid": {
+                      "title": "Código de usuário",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "urlimg": {
+                      "title": "URL Imagem Perfil",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "email": {
+                      "title": "E-mail",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "nome": {
+                      "title": "Nome",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "telefone": {
+                      "title": "Telefone",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "plan": {
+                      "title": "Plano",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "status": {
+                      "title": "Status e-mail",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "checkwpp": {
+                      "title": "WhatsApp verificad",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "resetpass": {
+                      "title": "Reset de senha",
+                      "type": "number",
+                      "readOnly": true
+                    },
+                    "datacriac": {
+                      "title": "Data criação",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "dataedit": {
+                      "title": "Data da última alteração",
+                      "type": "string",
+                      "readOnly": true
+                    },
+                    "favoritos": {
+                      "title": "ID Anúncios Favoritos",
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "readOnly": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/like-post": {
+      "post": {
+        "tags": [
+          "Anúncio"
+        ],
+        "summary": "Favoritar um anúncio",
+        "operationId": "likepost",
+        "requestBody": {
+          "description": "Ao fornecer o codigo de usuario e o codigo de anúncio o sistema irá criar um favorito",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "userid",
+                  "postid"
+                ],
+                "type": "object",
+                "properties": {
+                  "userid": {
+                    "title": "Código de usuário",
+                    "type": "number"
+                  },
+                  "postid": {
+                    "title": "Código do anúncio",
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/unlike-post": {
+      "post": {
+        "tags": [
+          "Anúncio"
+        ],
+        "summary": "Desfavoritar um anúncio",
+        "operationId": "unlikepost",
+        "requestBody": {
+          "description": "Ao fornecer o codigo de usuario e o codigo de anúncio o sistema irá remover o favorito",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "userid",
+                  "postid"
+                ],
+                "type": "object",
+                "properties": {
+                  "userid": {
+                    "title": "Código de usuário",
+                    "type": "number"
+                  },
+                  "postid": {
+                    "title": "Código do anúncio",
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-posts": {
+      "post": {
+        "tags": [
+          "Pesquisa"
+        ],
+        "summary": "Lista de anúncio",
+        "operationId": "listpost",
+        "requestBody": {
+          "description": "Faça uma listagem dos anúncios. <br><br>Tipos:<br>0 - Rua<br>1 - Bairro<br>2 - Cidade<br>3 - Estado<br><br>Text:<br>Texto livre para o filtro",
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "catg_a",
+                  "type_a",
+                  "type_f",
+                  "text"
+                ],
+                "type": "object",
+                "properties": {
+                  "catg_a": {
+                    "title": "Categoria do anúncio",
+                    "type": "number",
+                    "example": 0
+                  },
+                  "type_a": {
+                    "title": "Tipo do anúncio",
+                    "type": "number",
+                    "example": 0
+                  },
+                  "type_f": {
+                    "title": "Tipo do Filtro",
+                    "type": "number",
+                    "enum": [
+                      {
+                        "value": 0,
+                        "description": "Rua"
+                      },
+                      {
+                        "value": 1,
+                        "description": "Bairro"
+                      },
+                      {
+                        "value": 2,
+                        "description": "Cidade"
+                      },
+                      {
+                        "value": 3,
+                        "description": "Estado"
+                      }
+                    ],
+                    "example": 0
+                  },
+                  "text": {
+                    "title": "Texto do Filtro",
+                    "type": "string",
+                    "example": "Nome da Cidade"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "codigo": {
+                        "title": "Código de anúncio",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "imagens": {
+                        "title": "Imagens do Anúncio",
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "readOnly": true
+                        },
+                        "readOnly": true
+                      },
+                      "title": {
+                        "title": "Titulo do anúncio",
+                        "type": "string",
+                        "maxLength": 100,
+                        "readOnly": true
+                      },
+                      "descricao": {
+                        "title": "Descrição do anúncio",
+                        "type": "string",
+                        "maxLength": 500,
+                        "readOnly": true
+                      },
+                      "price": {
+                        "title": "Valor do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "quartos": {
+                        "title": "Quantidade de quartos",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "banheiros": {
+                        "title": "Quantidade de banheiros",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "metros": {
+                        "title": "Tamanho em m²",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "vagas": {
+                        "title": "Estacionamento/Garagem",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "areaext": {
+                        "title": "Área externa",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "piscina": {
+                        "title": "Piscina",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "arealzr": {
+                        "title": "Área de lazer",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "data": {
+                        "title": "Data da postagem",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                      },
+                      "pontos": {
+                        "title": "Relevância",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "address": {
+                        "title": "Endereço do anúncio",
+                        "type": "string",
+                        "maxLength": 100,
+                        "readOnly": true
+                      },
+                      "lat": {
+                        "title": "Latitude do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "log": {
+                        "title": "Longitude do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      }
+                    }
+                  },
+                  "readOnly": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/list-highlights/{City}": {
+      "get": {
+        "tags": [
+          "Pesquisa"
+        ],
+        "summary": "Lista de anúncio destaques por estado",
+        "description": "Faça uma listagem dos anúncios destacadas para página inicial.",
+        "operationId": "highlightspost",
+        "parameters": [
+          {
+            "name": "City",
+            "in": "path",
+            "description": "Nome da Cidade",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "codigo": {
+                        "title": "Código de anúncio",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "imagens": {
+                        "title": "Imagens do Anúncio",
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "readOnly": true
+                        },
+                        "readOnly": true
+                      },
+                      "title": {
+                        "title": "Titulo do anúncio",
+                        "type": "string",
+                        "maxLength": 100,
+                        "readOnly": true
+                      },
+                      "descricao": {
+                        "title": "Descrição do anúncio",
+                        "type": "string",
+                        "maxLength": 500,
+                        "readOnly": true
+                      },
+                      "price": {
+                        "title": "Valor do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "quartos": {
+                        "title": "Quantidade de quartos",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "banheiros": {
+                        "title": "Quantidade de banheiros",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "metros": {
+                        "title": "Tamanho em m²",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "vagas": {
+                        "title": "Estacionamento/Garagem",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "areaext": {
+                        "title": "Área externa",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "piscina": {
+                        "title": "Piscina",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "arealzr": {
+                        "title": "Área de lazer",
+                        "type": "boolean",
+                        "readOnly": true
+                      },
+                      "data": {
+                        "title": "Data da postagem",
+                        "type": "string",
+                        "format": "date-time",
+                        "readOnly": true
+                      },
+                      "pontos": {
+                        "title": "Relevância",
+                        "type": "number",
+                        "readOnly": true
+                      },
+                      "address": {
+                        "title": "Endereço do anúncio",
+                        "type": "string",
+                        "maxLength": 100,
+                        "readOnly": true
+                      },
+                      "lat": {
+                        "title": "Latitude do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      },
+                      "log": {
+                        "title": "Longitude do anúncio",
+                        "type": "string",
+                        "readOnly": true
+                      }
+                    }
+                  },
+                  "readOnly": true
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error_message": {
+                      "type": "string",
+                      "description": "Motivo do erro",
+                      "example": "Mensagem de erro"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "favot-anunc": {
+        "required": [
+          "userid",
+          "postid"
+        ],
+        "type": "object",
+        "properties": {
+          "userid": {
+            "title": "Código de usuário",
+            "type": "number"
+          },
+          "postid": {
+            "title": "Código do anúncio",
+            "type": "number"
+          }
+        }
+      },
+      "return-login": {
+        "type": "object",
+        "properties": {
+          "userid": {
+            "title": "Código de usuário",
+            "type": "number",
+            "readOnly": true
+          },
+          "urlimg": {
+            "title": "URL Imagem Perfil",
+            "type": "string",
+            "readOnly": true
+          },
+          "email": {
+            "title": "E-mail",
+            "type": "string",
+            "readOnly": true
+          },
+          "nome": {
+            "title": "Nome",
+            "type": "string",
+            "readOnly": true
+          },
+          "telefone": {
+            "title": "Telefone",
+            "type": "number",
+            "readOnly": true
+          },
+          "plan": {
+            "title": "Plano",
+            "type": "number",
+            "readOnly": true
+          },
+          "status": {
+            "title": "Status e-mail",
+            "type": "number",
+            "readOnly": true
+          },
+          "checkwpp": {
+            "title": "WhatsApp verificad",
+            "type": "number",
+            "readOnly": true
+          },
+          "resetpass": {
+            "title": "Reset de senha",
+            "type": "number",
+            "readOnly": true
+          },
+          "datacriac": {
+            "title": "Data criação",
+            "type": "string",
+            "readOnly": true
+          },
+          "dataedit": {
+            "title": "Data da última alteração",
+            "type": "string",
+            "readOnly": true
+          },
+          "favoritos": {
+            "title": "ID Anúncios Favoritos",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "readOnly": true
+            },
+            "readOnly": true
+          }
+        }
+      },
+      "return-anunc": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "title": "Código de anúncio",
+            "type": "number",
+            "readOnly": true
+          },
+          "user": {
+            "title": "Responsável pelo anúncio",
+            "type": "object",
+            "properties": {
+              "img": {
+                "title": "Imagem Responsável",
+                "type": "string",
+                "readOnly": true
+              },
+              "email": {
+                "title": "E-mail Responsável",
+                "type": "string",
+                "maxLength": 100,
+                "readOnly": true
+              },
+              "nome": {
+                "title": "Nome Responsável",
+                "type": "string",
+                "maxLength": 150,
+                "readOnly": true
+              },
+              "tel": {
+                "title": "Telefone Responsável",
+                "type": "number",
+                "readOnly": true
+              }
+            },
+            "readOnly": true
+          },
+          "imagens": {
+            "title": "Imagens do Anúncio",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "readOnly": true
+            },
+            "readOnly": true
+          },
+          "title": {
+            "title": "Titulo do anúncio",
+            "type": "string",
+            "maxLength": 100,
+            "readOnly": true
+          },
+          "descricao": {
+            "title": "Descrição do anúncio",
+            "type": "string",
+            "maxLength": 500,
+            "readOnly": true
+          },
+          "price": {
+            "title": "Valor do anúncio",
+            "type": "string",
+            "readOnly": true
+          },
+          "quartos": {
+            "title": "Quantidade de quartos",
+            "type": "number",
+            "readOnly": true
+          },
+          "banheiros": {
+            "title": "Quantidade de banheiros",
+            "type": "number",
+            "readOnly": true
+          },
+          "metros": {
+            "title": "Tamanho em m²",
+            "type": "number",
+            "readOnly": true
+          },
+          "vagas": {
+            "title": "Estacionamento/Garagem",
+            "type": "number",
+            "readOnly": true
+          },
+          "areaext": {
+            "title": "Área externa",
+            "type": "boolean",
+            "readOnly": true
+          },
+          "piscina": {
+            "title": "Piscina",
+            "type": "boolean",
+            "readOnly": true
+          },
+          "arealzr": {
+            "title": "Área de lazer",
+            "type": "boolean",
+            "readOnly": true
+          },
+          "data": {
+            "title": "Data da postagem",
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "pontos": {
+            "title": "Relevância",
+            "type": "number",
+            "readOnly": true
+          },
+          "address": {
+            "title": "Endereço do anúncio",
+            "type": "string",
+            "maxLength": 100,
+            "readOnly": true
+          },
+          "lat": {
+            "title": "Latitude do anúncio",
+            "type": "string",
+            "readOnly": true
+          },
+          "log": {
+            "title": "Longitude do anúncio",
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
+      "return-list-anunc": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "codigo": {
+              "title": "Código de anúncio",
+              "type": "number",
+              "readOnly": true
+            },
+            "imagens": {
+              "title": "Imagens do Anúncio",
+              "type": "array",
+              "items": {
+                "type": "string",
+                "readOnly": true
+              },
+              "readOnly": true
+            },
+            "title": {
+              "title": "Titulo do anúncio",
+              "type": "string",
+              "maxLength": 100,
+              "readOnly": true
+            },
+            "descricao": {
+              "title": "Descrição do anúncio",
+              "type": "string",
+              "maxLength": 500,
+              "readOnly": true
+            },
+            "price": {
+              "title": "Valor do anúncio",
+              "type": "string",
+              "readOnly": true
+            },
+            "quartos": {
+              "title": "Quantidade de quartos",
+              "type": "number",
+              "readOnly": true
+            },
+            "banheiros": {
+              "title": "Quantidade de banheiros",
+              "type": "number",
+              "readOnly": true
+            },
+            "metros": {
+              "title": "Tamanho em m²",
+              "type": "number",
+              "readOnly": true
+            },
+            "vagas": {
+              "title": "Estacionamento/Garagem",
+              "type": "number",
+              "readOnly": true
+            },
+            "areaext": {
+              "title": "Área externa",
+              "type": "boolean",
+              "readOnly": true
+            },
+            "piscina": {
+              "title": "Piscina",
+              "type": "boolean",
+              "readOnly": true
+            },
+            "arealzr": {
+              "title": "Área de lazer",
+              "type": "boolean",
+              "readOnly": true
+            },
+            "data": {
+              "title": "Data da postagem",
+              "type": "string",
+              "format": "date-time",
+              "readOnly": true
+            },
+            "pontos": {
+              "title": "Relevância",
+              "type": "number",
+              "readOnly": true
+            },
+            "address": {
+              "title": "Endereço do anúncio",
+              "type": "string",
+              "maxLength": 100,
+              "readOnly": true
+            },
+            "lat": {
+              "title": "Latitude do anúncio",
+              "type": "string",
+              "readOnly": true
+            },
+            "log": {
+              "title": "Longitude do anúncio",
+              "type": "string",
+              "readOnly": true
+            }
+          }
+        },
+        "readOnly": true
+      }
+    },
+    "securitySchemes": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "API-KEY",
+        "in": "header"
+      }
+    }
+  }
+}

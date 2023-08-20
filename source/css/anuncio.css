@@ -12,7 +12,6 @@
 .divisa {
     margin: 0px;
 }
-
 .profile-picture {
     position: absolute;
     width: 55px;
@@ -122,4 +121,24 @@
     z-index: 2;
     color: #fff;
     background-color: #fff;
+}
+
+.btnswpp {
+    position: fixed;
+    z-index: 99;
+    right: 10px;
+    bottom: 10px;
+    margin: 0px;
+}
+
+
+/*Google Maps*/
+.gm-fullscreen-control {
+    display: none;
+}
+.gm-style-mtc {
+    display: none;
+}
+.gm-style-cc {
+    display: none;
 }

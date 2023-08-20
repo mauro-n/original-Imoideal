@@ -1,68 +1,91 @@
 <?php
 
-$db_host = "srv185.hstgr.io";
-$db_driver = "mysql";
+$GoogleApiKey = "AIzaSyDkV1zpoamsH6o8OSaQznGbnPECS6nwUpw";
+$linkApi = "https://maps.googleapis.com/maps/api/geocode/json?address=";
 
-// Conexão com o banco de dados produtivo
-$db_nome = "u440131743_imoideal";
-$db_usuario = "u440131743_imoideal";
-$db_senha = "X?tOmV8T3j9>";
+//Processar FILTROS dos ANUNCIOS
+require_once 'api/sys/Database.php';
 
-try {
-    $conn_produtivo = new PDO("$db_driver:host=$db_host; dbname=$db_nome", $db_usuario, $db_senha, array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
-    $conn_produtivo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $conn_produtivo->exec('SET NAMES utf8');
-} catch (PDOException $e) {
-    echo "Erro na conexão com o banco de dados produtivo: " . $e->getMessage();
-    exit();
+$anuncios = [];
+
+$conexao = Database::conexao('PRD');
+
+$consulta = $conexao->query("SELECT * FROM T_ANUNCIO WHERE ANC_JBPC = 0;");
+while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
+    $anuncios[] = $linha;
 }
 
-// Conexão com o banco de dados sandbox
-$db_nome = "u440131743_imoideal_QAS";
-$db_usuario = "u440131743_imoideal_QAS";
-$db_senha = "?1ejslT[vjzX";
+foreach ($anuncios as $anuncio) {
 
-try {
-    $conn_sandbox = new PDO("$db_driver:host=$db_host; dbname=$db_nome", $db_usuario, $db_senha, array(PDO::MYSQL_ATTR_FOUND_ROWS => true));
-    $conn_sandbox->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $conn_sandbox->exec('SET NAMES utf8');
-} catch (PDOException $e) {
-    echo "Erro na conexão com o banco de dados sandbox: " . $e->getMessage();
-    exit();
-}
+    $rua = "";
+    $bairro = "";
+    $cidade = "";
+    $estado = "";
 
-//Seleciona Tabelas
-$consulta = $conn_produtivo->query("SHOW TABLES");
-$tabelas_prd = $consulta->fetchAll(PDO::FETCH_COLUMN);
-$consulta = $conn_sandbox->query("SHOW TABLES");
-$tabelas_sbx = $consulta->fetchAll(PDO::FETCH_COLUMN);
+    $encodedSearchText = urlencode($anuncio['ANC_ADRS']);
+    $url = $linkApi . $encodedSearchText . "&language=pt-BR&key=" . $GoogleApiKey;
 
-//Seleciona campos de tabela
-$campos_prd = [];
-$campos_sbx = [];
+    $ch = curl_init();
 
-foreach ($tabelas_prd as $tabela) {
-    $consulta = $conn_produtivo->query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{$tabela}';");
-    while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
-        $campos_prd[] = $linha;
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+
+    $result = curl_exec($ch);
+    if (curl_errno($ch)) {
+        continue;
+    }
+    curl_close($ch);
+
+    $json = json_decode($result);
+
+    if ($json->status === "OK") {
+
+        $results = $json->results;
+
+        if (isset($results[0]->address_components)) {
+            $result = $results[0]->address_components;
+
+            foreach ($result as $line) {
+//                echo "<pre>";
+//                print_r($line);
+//                echo "</pre>";
+
+                foreach ($line->types as $l) {
+                    switch ($l) {
+                        case "route":
+                            $rua = $line->short_name;
+                            break;
+                        case "sublocality":
+                            $bairro = $line->short_name;
+                            break;
+                        case "administrative_area_level_2":
+                            $cidade = $line->short_name;
+                            break;
+                        case "administrative_area_level_1":
+                            $estado = $line->short_name;
+                            break;
+                    }
+                }
+            }
+
+            $sql = "UPDATE T_ANUNCIO SET ANC_STRT = :STRT, ANC_BAIR = :BAIR, ANC_CITY = :CITY, ANC_UFST = :UFST, ANC_JBPC = :JBPC WHERE ANC_ICOD = :ICOD";
+            $stmt = $conexao->prepare($sql);
+            $stmt->execute(array(
+                ':STRT' => $rua,
+                ':BAIR' => $bairro,
+                ':CITY' => $cidade,
+                ':UFST' => $estado,
+                ':JBPC' => 1,
+                ':ICOD' => $anuncio['ANC_ICOD'],
+            ));
+        } else {
+            continue;
+        }
+    } else {
+        continue;
     }
 }
 
-foreach ($tabelas_sbx as $tabela) {
-    $consulta = $conn_sandbox->query("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '{$tabela}';");
-    while ($linha = $consulta->fetch(PDO::FETCH_ASSOC)) {
-        $campos_sbx[] = $linha;
-    }
-}
-
-
-//Verificar Tabelas
-
-echo "<pre>";
-print_r($campos_prd);
-echo "</pre>";
-
-// Fechar as conexões
-$conn_sandbox = null;
-$conn_produtivo = null;
+$conexao = null;
 ?>

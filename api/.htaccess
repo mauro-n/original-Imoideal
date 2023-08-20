@@ -1,0 +1,54 @@
+RewriteEngine On
+
+# Remover a extensão .php dos URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}\.php -f
+RewriteRule ^(.*)$ $1.php
+
+# Redirecionar URLs específicas com parâmetros
+RewriteRule ^source/prd/info-system$ source/info-system.php?amb=PRD [QSA,L]
+RewriteRule ^source/sbx/info-system$ source/info-system.php?amb=SBX [QSA,L]
+
+RewriteRule ^source/prd/create-login$ source/create-login.php?amb=PRD [QSA,L]
+RewriteRule ^source/sbx/create-login$ source/create-login.php?amb=SBX [QSA,L]
+
+RewriteRule ^source/prd/valid-login$ source/valid-login.php?amb=PRD [QSA,L]
+RewriteRule ^source/sbx/valid-login$ source/valid-login.php?amb=SBX [QSA,L]
+
+RewriteRule ^source/prd/get-user/([a-zA-Z0-9]+)/?$ source/get-user.php?amb=PRD&cod=$1 [NC,L,QSA]
+RewriteRule ^source/sbx/get-user/([a-zA-Z0-9]+)/?$ source/get-user.php?amb=SBX&cod=$1 [NC,L,QSA]
+
+RewriteRule ^source/prd/get-likes/([a-zA-Z0-9]+)/?$ source/get-likes.php?amb=PRD&cod=$1 [NC,L,QSA]
+RewriteRule ^source/sbx/get-likes/([a-zA-Z0-9]+)/?$ source/get-likes.php?amb=SBX&cod=$1 [NC,L,QSA]
+
+RewriteRule ^source/prd/get-posts/([a-zA-Z0-9]+)/?$ source/get-posts.php?amb=PRD&cod=$1 [NC,L,QSA]
+RewriteRule ^source/sbx/get-posts/([a-zA-Z0-9]+)/?$ source/get-posts.php?amb=SBX&cod=$1 [NC,L,QSA]
+
+RewriteRule ^source/prd/get-post/([a-zA-Z0-9]+)/?$ source/get-post.php?amb=PRD&cod=$1 [NC,L,QSA]
+RewriteRule ^source/sbx/get-post/([a-zA-Z0-9]+)/?$ source/get-post.php?amb=SBX&cod=$1 [NC,L,QSA]
+
+RewriteRule ^source/prd/list-highlights/([^/]+)/?$ source/list-highlights.php?amb=PRD&city=$1 [NC,L,QSA,B,NE]
+RewriteRule ^source/sbx/list-highlights/([^/]+)/?$ source/list-highlights.php?amb=SBX&city=$1 [NC,L,QSA,B,NE]
+
+RewriteRule ^source/prd/list-posts$ source/list-posts.php?amb=PRD [QSA,L]
+RewriteRule ^source/sbx/list-posts$ source/list-posts.php?amb=SBX [QSA,L]
+
+RewriteRule ^source/prd/like-post$ source/like-post.php?amb=PRD [QSA,L]
+RewriteRule ^source/sbx/like-post$ source/like-post.php?amb=SBX [QSA,L]
+
+RewriteRule ^source/prd/unlike-post$ source/unlike-post.php?amb=PRD [QSA,L]
+RewriteRule ^source/sbx/unlike-post$ source/unlike-post.php?amb=SBX [QSA,L]
+
+# Configuração de páginas de erro personalizadas
+ErrorDocument 403 /403.php
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
+
+# Remover cabeçalhos específicos
+<IfModule mod_headers.c>
+    Header unset Date
+    Header unset Platform
+    Header unset Server
+    Header unset Vary
+    Header unset Content-Length
+</IfModule>

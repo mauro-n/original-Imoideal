@@ -64,7 +64,8 @@ try {
             "checkwpp" => $json->checkwpp,
             "resetpass" => $json->resetpass,
             "datacriac" => $json->datacriac,
-            "dataedit" => $json->dataedit
+            "dataedit" => $json->dataedit,
+            "favoritos" => $json->favoritos
         ];
 
         session_start();
@@ -75,8 +76,8 @@ try {
     }
 } catch (Exception $exc) {
     $retorno['status'] = false;
-    $retorno['mensagem'] = $json->error_message;
+    $retorno['mensagem'] = $exc->getMessage();
 }
 
-echo json_encode($retorno, JSON_PRETTY_PRINT);
+echo json_encode($retorno, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 

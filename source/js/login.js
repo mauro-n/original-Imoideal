@@ -1,27 +1,9 @@
-var InputEmail;
-var InputPassword;
-
-var RegisterEmail;
-var RegisterName;
-var RegisterTel;
-var RegisterPassword;
-var RegisterConfirm;
-
 const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 const nameRegex = /^[A-Za-zÀ-ÿ\s]+$/;
 const phoneNumberMask = "(__) _ ____-____";
 const phoneNumberMask2 = "(__) ____-____";
 
-function Inicializa() {
-    InputEmail = document.getElementById("InputEmail");
-    InputPassword = document.getElementById("InputPassword");
-
-    RegisterEmail = document.getElementById("RegisterEmail");
-    RegisterName = document.getElementById("RegisterName");
-    RegisterTel = document.getElementById("RegisterTel");
-    RegisterPassword = document.getElementById("RegisterPassword");
-    RegisterConfirm = document.getElementById("RegisterConfirm");
-}
+var signin = true;
 
 function OnInput(obj) {
 
@@ -88,80 +70,152 @@ function OnChange(obj) {
     }
 }
 
+function OpenModalLoad() {
+    $('#ModalLoading').modal('show');
+}
+function CloseModalLoad() {
+    const intervalo = setInterval(() => {
+        console.log("Verificando modal");
+        if ($('#ModalLoading').is(':visible')) {
+            $('#ModalLoading').modal('hide');
+        } else {
+            clearInterval(intervalo);
+        }
+    }, 500);
+}
+
 function FazerLogin() {
 
-    if (!emailRegex.test(InputEmail.value)) {
-        alert("Email inválido");
-        console.log("Email inválido");
-        return;
+    OpenModalLoad();
+
+    console.group("Função Login");
+
+    try {
+
+        if (document.getElementById("InputEmail").value.length == "") {
+            document.getElementById("InputEmail").classList.add("is-invalid");
+            throw new Error("E-mail vazio");
+        }
+
+        if (document.getElementById("InputPassword").value.length == "") {
+            document.getElementById("InputPassword").classList.add("is-invalid");
+            throw new Error("Senha vazia");
+        }
+
+        var info = {
+            'email': document.getElementById("InputEmail").value,
+            'senha': document.getElementById("InputPassword").value,
+        };
+
+        var ajax1 = $.ajax({
+            url: "source/sys/forms/valid-login.php",
+            type: 'POST',
+            data: info,
+            dataType: 'json',
+            async: true,
+            beforeSend: function () {
+                console.log("Validando Login...");
+            }
+        })
+                .done(function (data) {
+                    console.log(data);
+                    if (data.status) {
+                        document.location.reload(true);
+                    } else {
+                        CloseModalLoad();
+                        console.error(data.mensagem);
+                        ExibirMsg("E", data.mensagem);
+                    }
+
+                })
+                .fail(function (jqXHR, textStatus, data) {
+                    CloseModalLoad();
+                    console.error(jqXHR['responseText']);
+                    ExibirMsg("E", jqXHR['responseText']);
+                });
+
+    } catch (e) {
+        console.log(e);
+        CloseModalLoad();
+        ExibirMsg("E", e);
     }
 
-    var info = {
-        'email': InputEmail.value,
-        'senha': InputPassword.value,
-    };
-
-    var ajax1 = $.ajax({
-        url: "source/sys/forms/valid-login.php",
-        type: 'POST',
-        data: info,
-        dataType: 'json',
-        async: true,
-        beforeSend: function () {
-            console.log("Validando Login...");
-        }
-    })
-            .done(function (data) {
-                console.log(data);
-                if (data.status) {
-                    document.location.reload(true);
-                } else {
-                    alert(data.mensagem);
-                }
-
-            })
-            .fail(function (jqXHR, textStatus, data) {
-                console.log(jqXHR);
-                console.log(textStatus);
-                console.log(data);
-                alert(jqXHR['responseText']);
-            });
+    console.groupEnd();
 }
 
 function CriarLogin() {
 
-    var info = {
-        'email': RegisterEmail.value,
-        'senha': RegisterPassword.value,
-        'nome': RegisterName.value,
-        'telef': RegisterTel.value,
-    };
+    OpenModalLoad();
 
-    var ajax1 = $.ajax({
-        url: "source/sys/forms/create-login.php",
-        type: 'POST',
-        data: info,
-        dataType: 'json',
-        async: true,
-        beforeSend: function () {
-            console.log("Criando Login...");
+    console.group("Criar Login");
+
+    try {
+
+        if (document.getElementById("RegisterEmail").value.length == "") {
+            document.getElementById("RegisterEmail").classList.add("is-invalid");
+            throw new Error("E-mail vazio");
         }
-    })
-            .done(function (data) {
-                console.log(data);
-                if (data.status) {
-                    document.location.reload(true);
-                } else {
-                    alert(data.mensagem);
-                }
 
-            })
-            .fail(function (jqXHR, textStatus, data) {
-                console.log(jqXHR);
-                console.log(textStatus);
-                console.log(data);
-                alert(jqXHR['responseText']);
-            });
+        if (document.getElementById("RegisterName").value.length == "") {
+            document.getElementById("RegisterName").classList.add("is-invalid");
+            throw new Error("Nome vazio");
+        }
+
+        if (document.getElementById("RegisterTel").value.length == "") {
+            document.getElementById("RegisterTel").classList.add("is-invalid");
+            throw new Error("Telefone vazio");
+        }
+
+        if (document.getElementById("RegisterPassword").value.length == "") {
+            document.getElementById("RegisterPassword").classList.add("is-invalid");
+            throw new Error("Senha vazia");
+        }
+
+        if (document.getElementById("RegisterConfirm").value.length == "") {
+            document.getElementById("RegisterConfirm").classList.add("is-invalid");
+            throw new Error("Confirmação de senha vazia");
+        }
+
+        var info = {
+            'email': document.getElementById("RegisterEmail").value,
+            'senha': document.getElementById("RegisterPassword").value,
+            'nome': document.getElementById("RegisterName").value,
+            'telef': document.getElementById("RegisterTel").value,
+        };
+
+        var ajax1 = $.ajax({
+            url: "source/sys/forms/create-login.php",
+            type: 'POST',
+            data: info,
+            dataType: 'json',
+            async: true,
+            beforeSend: function () {
+                console.log("Criando Login...");
+            }
+        })
+                .done(function (data) {
+                    console.log(data);
+                    if (data.status) {
+                        document.location.reload(true);
+                    } else {
+                        CloseModalLoad();
+                        console.error(data.mensagem);
+                        ExibirMsg("E", data.mensagem);
+                    }
+                })
+                .fail(function (jqXHR, textStatus, data) {
+                    CloseModalLoad();
+                    console.error(jqXHR['responseText']);
+                    ExibirMsg("E", jqXHR['responseText']);
+                });
+
+    } catch (e) {
+        console.log(e);
+        CloseModalLoad();
+        ExibirMsg("E", e);
+    }
+
+    console.groupEnd();
 }
 
 function capitalizeWords(inputString) {
@@ -169,3 +223,13 @@ function capitalizeWords(inputString) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 }
+
+document.addEventListener("keydown", function (event) {
+    if (event.keyCode === 13) {
+        if (signin) {
+            FazerLogin();
+        } else {
+            CriarLogin();
+        }
+    }
+});

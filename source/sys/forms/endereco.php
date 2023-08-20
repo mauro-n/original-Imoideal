@@ -1,15 +1,29 @@
 <?php
 
+//Permissões
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST");
+header("Access-Control-Allow-Headers: API-KEY, Content-Type");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Max-Age: 86400");
+
 $apiKey = "AIzaSyDkV1zpoamsH6o8OSaQznGbnPECS6nwUpw";
 
 $retorno = [];
 
 try {
     if (!isset($_POST['search'])) {
-        throw new Exception("Vazio");
+        // Decodifica o JSON enviado pelo curl
+        $data = json_decode(file_get_contents('php://input'), true);
+        if (isset($data['search'])) {
+            $searchText = $data['search'];
+        } else {
+            throw new Exception("Vazio");
+        }
+    } else {
+        $searchText = $_POST['search'];
     }
-    
-    $searchText = $_POST['search'];
+
     $encodedSearchText = urlencode($searchText);
 
     $url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $encodedSearchText . "&language=pt-BR&key=" . $apiKey;
@@ -36,7 +50,7 @@ try {
 //        echo "</pre>";
 
         foreach ($results as $result) {
-            
+
             $success = false;
 
             $array = [
@@ -44,7 +58,7 @@ try {
                 "type" => 0
             ];
 
-            $array["text"] = $result->formatted_address;
+            //$array["text"] = $result->formatted_address;
 
             foreach ($result->types as $type) {
                 $find = false;
@@ -76,7 +90,43 @@ try {
                     break;
                 }
             }
-            
+
+            foreach ($result->address_components as $data) {
+
+                foreach ($data->types as $type) {
+                    $find = false;
+                    switch ($array["type"]) {
+                        case 1:
+                            if ("route" == $type) {
+                                $array["text"] = $data->short_name;
+                                $find = true;
+                            }
+                            break;
+                        case 2:
+                            if ("sublocality" == $type) {
+                                $array["text"] = $data->short_name;
+                                $find = true;
+                            }
+                            break;
+                        case 3:
+                            if ("administrative_area_level_2" == $type) {
+                                $array["text"] = $data->short_name;
+                                $find = true;
+                            }
+                            break;
+                        case 4:
+                            if ("administrative_area_level_1" == $type) {
+                                $array["text"] = $data->short_name;
+                                $find = true;
+                            }
+                            break;
+                    }
+                    if ($find) {
+                        break;
+                    }
+                }
+            }
+
             if ($success) {
                 $retorno[] = $array;
             }
@@ -88,4 +138,4 @@ try {
     
 }
 
-echo json_encode($retorno, JSON_PRETTY_PRINT);
+echo json_encode($retorno, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

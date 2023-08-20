@@ -1,0 +1,40 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.hidden-h1 {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    visibility: hidden;
+}
+
+#icon-perfil {
+    color: #6c757d;
+}
+#icon-favorite{
+    color: #6c757d;
+}
+#icon-myanunc{
+    color: #6c757d;
+}
+#icon-logout{
+    color: #6c757d;
+}
+.dropdown-item:hover {
+    cursor: pointer;
+    background-color: #DC3545;
+    color: #fff;
+    #icon-perfil {
+        color: #fff;
+    }
+    #icon-favorite{
+        color: #fff;
+    }
+    #icon-myanunc{
+        color: #fff;
+    }
+    #icon-logout{
+        color: #fff;
+    }
+}

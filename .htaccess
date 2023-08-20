@@ -4,6 +4,7 @@ RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}\.php -f
 RewriteRule ^(.*)$ $1.php
 
 RewriteRule ^pesquisa/([^/]+)/?$ pesquisa.php?filtro=$1 [NC,L,QSA]
+RewriteRule ^anuncio/([^/]+)/?$ anuncio.php?cod=$1 [NC,L,QSA]
 
 ErrorDocument 403 /403.php
 ErrorDocument 404 /404.php
